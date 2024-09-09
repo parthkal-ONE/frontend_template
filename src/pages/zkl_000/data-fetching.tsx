@@ -1,137 +1,84 @@
 "use client";
 import { Container, Typography } from "@mui/material";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import fetchNaLdfData from "@/utils/naldf-api-helper";
 
 export default function NavigationPage() {
   const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 
+  const { data: data_openapi, isLoading: isLoading_openapi } = useQuery({
+    queryKey: ["openapi"],
+    queryFn: async () => await fetchNaLdfData("/api-json", "GET"),
+  });
+
   return (
     <Container>
       <h1>Data Fetching</h1>
-      <h2>Querying Data using React Query</h2>
+      <h2>
+        Querying Data from the NA LDF API Nest JS Backend using React Query
+      </h2>
       <p>
-        We use the{" "}
-        <Link
-          href="https://tanstack.com/query/latest/docs/framework/react/quick-start"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <code>@tanstack/react-query</code>
-        </Link>{" "}
-        library to fetch data. Here are the steps:
+        Most of the communication that we will do from this template will be to
+        the NA LDF API Nest JS Backend.
       </p>
-      <ul>
-        <li style={{ marginBottom: "1rem" }}>
-          <h3>Initializing Next JS API Route</h3>
-          <p>
-            The first step is creating a new API Route in the Next JS Backend.
-          </p>
-          <ol>
-            <li style={{ marginBottom: "1rem" }}>
-              Create a new folder in the <code>{"@/src/pages/api"}</code> route
-              by the name of the function. (Try to keep it descriptive.)
-              <h5>
-                <code>{`@/src/pages/api/<function_name>/index.js`}</code>
-              </h5>
-            </li>
-            <li></li>
-          </ol>
-        </li>
-        <li style={{ marginBottom: "1rem" }}>
-          <h3>✅ Initializing the Client</h3>
-          <p>
-            These steps have already been implemented as a part of the template
-            in the <code>{"/_app.tsx/"}</code> file in the <code>src</code>{" "}
-            Directory.
-          </p>
-        </li>
-        <ol>
-          <li style={{ marginBottom: "1rem" }}>
-            ✅ Import the Query Client and Provider in the Root of the Project.
-            <br />
-            <h5>
-              <code>{`import { QueryClient, QueryClientProvider } from "@tanstack/react-query";`}</code>
-            </h5>
-          </li>
-          <li>
-            ✅ Create the Query Client in the Root of the Project to create a
-            new Client. This is the Client that will handle all the API Requests
-            for our App.
-            <h5>
-              <code>{`const queryClient = new QueryClient();`}</code>
-            </h5>
-          </li>
-          <li>
-            ✅ Provide the <code>queryClient</code> to the Root of the app. Now,
-            we can access this <code>queryClient</code> in any component in the
-            app.
-            <h5>
-              <code>{`<QueryClientProvider client={queryClient}>`}</code>
-              <br />
-              <code>{`...`}</code>
-              <br />
-              <code>{`<Component {...pageProps} />`}</code>
-              <br />
-              <code>{`...`}</code>
-              <br />
-              <code>{`</QueryClientProvider>`}</code>
-              <br />
-            </h5>
-          </li>
-        </ol>
+      <ol>
         <li>
-          <h3>Utilizing the Library</h3>
           <p>
-            These steps need to be performed in the component where you want to
-            make the request. You can also use the demos used in the source of
-            this template as a starting point.
-            <br />
-            <br />
-            Best Practice tells us that Data is best fetched at the top of the
-            Tree, and must be decoupled from its component refreshes.
+            Import the <code>useQuery</code> hook from React Query.
           </p>
-          <ol>
-            <li style={{ marginBottom: "1rem" }}>
-              Import the <code>useQueryClient</code> hook from the library where
-              you need to fetch data.
-              <br />
-              <h5>
-                <code>{`import { useQueryClient } from "@tanstack/react-query";`}</code>
-              </h5>
-            </li>
-            <li style={{ marginBottom: "1rem" }}>
-              Create a new instance of the <code>QueryClient</code>.
-              <br />
-              <h5>
-                <code>{`const queryClient = useQueryClient();`}</code>
-              </h5>
-            </li>
-            <li style={{ marginBottom: "1rem" }}>
-              Create a new Query using the <code>queryClient</code>.
-              <br />
-              <h5>
-                <code>{`const query = useQuery({ queryKey: [...], queryFn: <fetch_call> });`}</code>
-              </h5>
-              <ul>
-                <li>
-                  <h4>queryKey</h4>
-                  <p>
-                    This is the key that will be used to identify the query in
-                    the App (to do things like refetching etc).
-                    <br />
-                    Usually, it is a unique contextual string or an array of
-                    strings.
-                  </p>
-                </li>
-                <li>
-                  <h4>queryFn</h4>
-                </li>
-              </ul>
-            </li>
-          </ol>
+          <h5>
+            <code>{`import { useQuery } from "@tanstack/react-query";`}</code>
+          </h5>
         </li>
-      </ul>
+        <li>
+          <p>
+            Import the <code>fetchNaLdfData</code> function from{" "}
+            <code>naldf-api-helper</code> utility.
+          </p>
+          <h5>
+            <code>{`import fetchNaLdfData from "@/utils/naldf-api-helper";`}</code>
+          </h5>
+        </li>
+        <li>
+          <p>
+            Use the <code>fetchNaLdfData</code> function along with React Query
+            like this:
+          </p>
+          <h5>
+            <code>{`// SYNTAX`}</code>
+            <br />
+            <code>{`const { data, isLoading } = useQuery({`}</code>
+            <br />
+            <code
+              style={{ paddingLeft: "1rem" }}
+            >{`queryKey: ["<function_identifier_name>"],`}</code>
+            <br />
+            <code
+              style={{ paddingLeft: "1rem" }}
+            >{`\tqueryFn: async () => await fetchNaLdfData("<naldf_api_path>", "<method>", <body_object>),`}</code>
+            <br />
+            <code>{`});`}</code>
+            <br />
+          </h5>
+          <h5>
+            <code>{`// EXAMPLE`}</code>
+            <br />
+            <code>{`const { data: data_openapi, isLoading: isLoading_openapi } = useQuery({`}</code>
+            <br />
+            <code
+              style={{ paddingLeft: "1rem" }}
+            >{`queryKey: ["openapi"],`}</code>
+            <br />
+            <code
+              style={{ paddingLeft: "1rem" }}
+            >{`queryFn: async () => await fetchNaLdfData("/api-json", "GET"),`}</code>
+            <br />
+            <code>{`});`}</code>
+            <br />
+          </h5>
+        </li>
+      </ol>
     </Container>
   );
 }

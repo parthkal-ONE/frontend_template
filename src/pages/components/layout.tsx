@@ -45,6 +45,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { ReactNode, ChangeEvent } from "react";
 import Head from "next/head";
+import { QueryClient } from "@tanstack/react-query";
 
 const drawerWidth = 240;
 
@@ -113,6 +114,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const session = useSession();
+  const queryClient = new QueryClient();
 
   if (session.status === "loading") {
     return (
@@ -287,42 +289,49 @@ export default function MainLayout({ children }: { children: ReactNode }) {
             }}
             priority
           />
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  alt="User Image"
-                  src={session?.data?.user?.image || ""}
-                />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem
-                onClick={() => {
-                  session?.status == "authenticated" ? signOut() : signIn();
+          <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+            {queryClient.isFetching() > 0 && (
+              <CircularProgress size={30} color="secondary" />
+            )}
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    alt="User Image"
+                    src={session?.data?.user?.image || ""}
+                  />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
                 }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
               >
-                <Typography textAlign="center">
-                  {session?.status == "authenticated" ? "Sign Out" : "Sign In"}
-                </Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
+                <MenuItem
+                  onClick={() => {
+                    session?.status == "authenticated" ? signOut() : signIn();
+                  }}
+                >
+                  <Typography textAlign="center">
+                    {session?.status == "authenticated"
+                      ? "Sign Out"
+                      : "Sign In"}
+                  </Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer

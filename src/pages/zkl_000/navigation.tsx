@@ -32,7 +32,27 @@ export default function NavigationPage() {
       <ul>
         <li>
           <h3>Simple Page</h3>
-          <code></code>
+          <ol>
+            <li>
+              <p>
+                Depending on the usage, we can create a new page either of these
+                ways:
+              </p>
+              <h5>
+                <code>@src/pages/{"<project_id>/<page_name>.tsx"}</code>
+              </h5>
+              <h5>
+                <code>
+                  //OR <br />
+                  <code>@src/pages/{"<project_id>/<page_name>/index.tsx"}</code>
+                </code>
+              </h5>
+            </li>
+            <li>
+              Use the Source Code of any page in this Template as a starting
+              point, based on the functionality you require.
+            </li>
+          </ol>
         </li>
       </ul>
     </Container>
