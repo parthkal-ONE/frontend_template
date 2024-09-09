@@ -66,7 +66,7 @@ export default function DataGridKit(props) {
         checkboxSelection
         disableRowSelectionOnClick
         slots={{ toolbar: TableToolbar }}
-      ></DataGrid>
+      />
     </Box>
   );
 }
