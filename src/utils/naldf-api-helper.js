@@ -11,7 +11,7 @@ export default async function fetchNaLdfData(api_url, method, body = null) {
     });
     return response.json();
   } catch (error) {
-    console.error(error);
+    console.error("Error in fetchNaLdfData", error);
     return error;
   }
 }
