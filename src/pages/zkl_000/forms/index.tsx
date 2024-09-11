@@ -1,6 +1,7 @@
 "use client";
 import { Card, Checkbox, Container, Select, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
+import FormExample1 from "./components/form-example1";
 
 export default function FormsPage() {
   const form = useForm({
@@ -29,6 +30,7 @@ export default function FormsPage() {
           </Card>
         </div>
       </form>
+      <FormExample1 />
     </Container>
   );
 }
